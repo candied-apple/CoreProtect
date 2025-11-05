@@ -52,7 +52,8 @@ jobs:
         id: find_jar
         run: |
           # Look for the main shaded JAR (built by maven-shade-plugin)
-          JAR_FILE=$(find target -name "CoreProtect-*.jar" -not -name "*-original.jar" | head -n 1)
+          # Pattern matches CoreProtect-{version}.jar (e.g., CoreProtect-23.0.jar)
+          JAR_FILE=$(find target -maxdepth 1 -name "CoreProtect-[0-9]*.jar" -not -name "*-original.jar" | head -n 1)
           if [ -z "$JAR_FILE" ]; then
             echo "Error: No JAR file found in target directory"
             exit 1
@@ -61,7 +62,7 @@ jobs:
           echo "JAR_NAME=$(basename $JAR_FILE)" >> $GITHUB_OUTPUT
 
       - name: Create Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           tag_name: v${{ steps.extract_version.outputs.VERSION }}
           name: Release v${{ steps.extract_version.outputs.VERSION }}
