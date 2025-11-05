@@ -1,3 +1,7 @@
+# This workflow builds the project and creates a GitHub release
+# It can be triggered manually from the Actions tab
+# To use: Go to Actions > Build and Release > Run workflow
+# Optionally specify a version, or leave empty to use the version from pom.xml
 name: Build and Release
 on:
   workflow_dispatch:
